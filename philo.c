@@ -26,19 +26,19 @@ int	init_philo(t_all *all)
 	while (++i <= all->num_philo - 1)
 	{
 		all->philo[i].pos = i + 1;
-		printf("==>pos_philo = %d<==\n", i + 1);
+		// printf("==>pos_philo = %d<==\n", i + 1);
 		all->philo[i].l_fork = &(all->forks[i]);
-		printf("==>philo %d -- left_fork = %d<==\n", all->philo[i].pos, i);
+		// printf("==>philo %d -- left_fork = %d<==\n", all->philo[i].pos, i);
 		all->philo[i].eat = all->num_eat;
 		if (all->philo[i].pos == all->num_philo)
 		{
 			all->philo[i].r_fork = &(all->forks[0]);
-			printf("==>philo %d -- right_fork = %d<==\n", all->philo[i].pos, 0);
+			// printf("==>philo %d -- right_fork = %d<==\n", all->philo[i].pos, 0);
 		}
 		else
 		{
 			all->philo[i].r_fork = &(all->forks[i + 1]);
-			printf("==>philo %d -- right_fork = %d<==\n", all->philo[i].pos, i + 1);
+			// printf("==>philo %d -- right_fork = %d<==\n", all->philo[i].pos, i + 1);
 		}
 		all->philo[i].all = all;
 	}
@@ -51,6 +51,11 @@ int	check_arguments(char **av, t_all *all)
 		printf("Bad number of philosophers.\n");
 	else if (av[5] && all->num_eat < 1)
 		printf("Bad number of times each philosopher must eat.\n");
+	else if (all->num_philo > 200)
+		printf("Enter less than 200 philosophers.\n");
+	else if (all->time_to_die < 60 || all->time_to_eat < 60
+			|| all->time_to_sleep < 60)
+		printf("time_to_die, time_to_eat or time_to_sleep less than 60 ms.\n");
 	else
 		return (1);
 	return (0);
@@ -88,7 +93,6 @@ int	init_arguments(char **av, t_all *all)
 int	main(int ac, char **av)
 {
 	t_all	all;
-	int		i;
 	
 	if (ac >= 5 && ac <= 6)
 	{

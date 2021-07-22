@@ -48,7 +48,7 @@ void	*check(void *p)
 
 	ph = (t_philo *)p;
 	ph->tm = get_time();
-	my_sleep(50);
+	my_sleep(5);
 	while (ph->eat)
 	{
 		pthread_mutex_lock(&ph->all->mutex);
@@ -57,6 +57,7 @@ void	*check(void *p)
 		{
 			report(ph, DIE);
 			ph->all->dead = 1;
+			pthread_mutex_unlock(ph->l_fork);
 			pthread_mutex_unlock(&ph->all->mutex);
 			break ;
 		}
@@ -71,9 +72,10 @@ void	*action(void *p)
 	t_philo	*ph;
 
 	ph = (t_philo *)p;
+
 	if (pthread_create(&ph->check, NULL, &check, p))
 		return ((void *)1);
-	if ((ph->pos + 1) % 2 == 0)
+	if ((ph->pos) % 2 == 0)
 		my_sleep(ph->all->time_to_eat);
 	while (ph->eat)
 	{
