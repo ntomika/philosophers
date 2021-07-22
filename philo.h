@@ -19,19 +19,19 @@ typedef struct s_philo
 	int				eat;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*r_fork;
-	uint64_t		tm;
+	uint64_t		present_time;
 	pthread_t		*thread;
 	pthread_t		check;
 	struct s_all	*all;
-
+	
 }				t_philo;
 
 typedef struct s_all
 {
 	int				num_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
 	int				num_eat;
 	int				dead;
 	uint64_t		start;

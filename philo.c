@@ -50,7 +50,7 @@ int	check_arguments(char **av, t_all *all)
 	if (all->num_philo <= 0)
 		printf("Bad number of philosophers.\n");
 	else if (av[5] && all->num_eat < 1)
-		printf("Bad number of times each philosopher must eat.\n");
+		printf("Nobody eats. Enter a number greater than 0.\n");
 	else if (all->num_philo > 200)
 		printf("Enter less than 200 philosophers.\n");
 	else if (all->time_to_die < 60 || all->time_to_eat < 60
