@@ -7,17 +7,17 @@ int	report(t_philo *ph, int msg)
 	pthread_mutex_lock(&ph->all->print);
 	if (ph->all->dead == 0)
 	{
-		printf("%llums %d ", (get_time() - ph->all->start), ph->pos);
+		printf("\033[35m%llums\033[0m \033[33m%d\033[0m ", (get_time() - ph->all->start), ph->pos);
 		if (msg == 1)
 			printf("has taken a fork\n");
 		else if (msg == 2)
-			printf("is eating\n");
+			printf("\033[32mis eating\033[0m\n");
 		else if (msg == 3)
-			printf("is sleeping\n");
+			printf("\033[34mis sleeping\033[0m\n");
 		else if (msg == 4)
-			printf("is thinking\n");
+			printf("\033[36mis thinking\033[0m\n");
 		else if (msg == 5)
-			printf("is died\n");
+			printf("\033[31mis died\033[0m\n");
 	}
 	pthread_mutex_unlock(&ph->all->print);
 	return (1);
@@ -31,7 +31,7 @@ int	eat_and_sleep(t_philo *ph)
 	report(ph, FORK);
 	pthread_mutex_lock(ph->r_fork);
 	report(ph, FORK);
-	ph->tm = get_time();
+	ph->present_time = get_time();
 	report(ph, EAT);
 	ph->eat -= 1;
 	my_sleep(ph->all->time_to_eat);
@@ -47,12 +47,13 @@ void	*check(void *p)
 	t_philo	*ph;
 
 	ph = (t_philo *)p;
-	ph->tm = get_time();
+	pthread_detach(ph->check);
+	ph->present_time = get_time();
 	my_sleep(5);
 	while (ph->eat)
 	{
 		pthread_mutex_lock(&ph->all->mutex);
-		if (((int)(get_time() - ph->tm) > ph->all->time_to_die)
+		if (((int)(get_time() - ph->present_time) > ph->all->time_to_die)
 			&& ph->all->dead == 0)
 		{
 			report(ph, DIE);
@@ -72,11 +73,10 @@ void	*action(void *p)
 	t_philo	*ph;
 
 	ph = (t_philo *)p;
-
 	if (pthread_create(&ph->check, NULL, &check, p))
 		return ((void *)1);
 	if ((ph->pos) % 2 == 0)
-		my_sleep(ph->all->time_to_eat);
+		my_sleep(ph->all->time_to_eat / 2);
 	while (ph->eat)
 	{
 		if (!eat_and_sleep(ph))
@@ -98,7 +98,7 @@ int	init_threads(t_all *all)
 	while (++i < all->num_philo)
 	{
 		if (pthread_create(&(thread[i]), NULL, action,
-			(void *)(&all->philo[i])))
+				(void *)(&all->philo[i])))
 			return (0);
 		all->philo[i].thread = &(thread[i]);
 	}

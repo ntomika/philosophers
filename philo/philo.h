@@ -1,11 +1,11 @@
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <pthread.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/time.h>
+# include <pthread.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <sys/time.h>
 
 # define FORK	1
 # define EAT	2
@@ -23,7 +23,6 @@ typedef struct s_philo
 	pthread_t		*thread;
 	pthread_t		check;
 	struct s_all	*all;
-	
 }				t_philo;
 
 typedef struct s_all
@@ -40,6 +39,11 @@ typedef struct s_all
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	*forks;
 }					t_all;
+
+int			init_philo(t_all *all);
+int			check_arguments(char **av, t_all *all);
+int			init_arguments(char **av, t_all *all);
+int			init_mutex(t_all *all);
 
 int			init_threads(t_all *all);
 void		*action(void *p);
