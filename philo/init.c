@@ -10,7 +10,10 @@ int	check_arguments(char **av, t_all *all)
 		ft_putstr_fd("Enter less than 200 philosophers.\n", 2);
 	else if (all->time_to_die < 60 || all->time_to_eat < 60
 		|| all->time_to_sleep < 60)
-		ft_putstr_fd("time_to_die, time_to_eat or time_to_sleep less than 60 ms.\n", 2);
+	{
+		ft_putstr_fd("[time_to_die], [time_to_eat] ", 2);
+		ft_putstr_fd("or [time_to_sleep] less than 60 ms.\n", 2);
+	}
 	else
 		return (1);
 	return (0);

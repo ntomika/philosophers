@@ -8,7 +8,8 @@ int	report(t_philo *ph, int msg)
 	pthread_mutex_lock(&ph->all->print);
 	if (ph->all->dead == 0)
 	{
-		printf("\033[35m%llums\033[0m \033[33m%d\033[0m ", (get_time() - ph->all->start), ph->pos);
+		printf("\033[35m%llums\033[0m \033[33m%d\033[0m ", \
+			(get_time() - ph->all->start), ph->pos);
 		if (msg == 1)
 			printf("has taken a fork\n");
 		else if (msg == 2)
