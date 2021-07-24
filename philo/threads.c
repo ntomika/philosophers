@@ -2,6 +2,7 @@
 
 int	report(t_philo *ph, int msg)
 {
+	usleep(10);
 	if (ph->all->dead == 1 || ph->eat == 0)
 		return (0);
 	pthread_mutex_lock(&ph->all->print);
